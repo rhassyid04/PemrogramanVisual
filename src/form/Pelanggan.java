@@ -18,7 +18,7 @@ import koneksi.koneksi;
  *
  * @author User
  */
-public class Form_Pelanggan extends javax.swing.JFrame {
+public class Pelanggan extends javax.swing.JFrame {
     private Connection conn = new koneksi().connect();
     private DefaultTableModel tabmode;
     ResultSet cari=null;
@@ -27,7 +27,7 @@ public class Form_Pelanggan extends javax.swing.JFrame {
     /**
      * Creates new form Form_Pelanggan
      */
-    public Form_Pelanggan() {
+    public Pelanggan() {
         initComponents();
         setLocationRelativeTo(null);        
         datatable();
@@ -51,7 +51,7 @@ public class Form_Pelanggan extends javax.swing.JFrame {
         Object[] Baris = {"ID Pelanggan", "Nama Pelanggan","Jenis Kelamin", "No Telepon", "Alamat"};
         tabmode = new DefaultTableModel(null, Baris);
         tabelpelanggan.setModel(tabmode);
-        String sql = "SELECT * FROM pelanggan";        
+        String sql = "SELECT * FROM pelanggan1";        
         try{
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
@@ -95,7 +95,7 @@ public class Form_Pelanggan extends javax.swing.JFrame {
         }else if(perempuan.isSelected()){
             jenis = "Perempuan";
         }
-        String sql = "insert into pelanggan values (?,?,?,?,?)";
+        String sql = "insert into pelanggan1 values (?,?,?,?,?)";
         try{
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, id.getText());
@@ -122,7 +122,7 @@ public class Form_Pelanggan extends javax.swing.JFrame {
             jenis = "Perempuan";
         }
         try{
-            String sql = "Update pelanggan set nama=?, jenis_kel=?, notelp=?, alamat=? where id='"+id.getText()+"'";
+            String sql = "Update pelanggan1 set nama=?, jenis_kel=?, notelp=?, alamat=? where id='"+id.getText()+"'";
             PreparedStatement stat= conn.prepareStatement(sql);
             stat.setString(1, nama.getText());
             stat.setString(2, jenis);
@@ -142,7 +142,7 @@ public class Form_Pelanggan extends javax.swing.JFrame {
     protected void hapus(){
         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
         if (ok==0){
-            String sql="delete from pelanggan where id ='"+id.getText()+"'";
+            String sql="delete from pelanggan1 where id ='"+id.getText()+"'";
             try{
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();
@@ -163,7 +163,7 @@ public class Form_Pelanggan extends javax.swing.JFrame {
             tabelpelanggan.setModel(tabmode);
             Statement stt=conn.createStatement();
             tabmode.getDataVector().removeAllElements();            
-            cari = stt.executeQuery("SELECT * from pelanggan WHERE id LIKE '%"+key+
+            cari = stt.executeQuery("SELECT * from pelanggan1 WHERE id LIKE '%"+key+
                     "%' OR nama LIKE '%"+key+"%' OR jenis_kel LIKE '%"+key+
                     "%' OR notelp LIKE '%"+key+"%'");
             while(cari.next()){
@@ -557,20 +557,21 @@ public class Form_Pelanggan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Form_Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Form_Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Form_Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Form_Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Pelanggan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Form_Pelanggan().setVisible(true);
+                new Pelanggan().setVisible(true);
             }
         });
     }

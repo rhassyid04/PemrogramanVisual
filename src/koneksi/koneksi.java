@@ -25,7 +25,7 @@ public class koneksi {
         }catch (ClassNotFoundException ex){
             System.out.println("Koneksi Gagal " +ex);
         }
-        String url = "jdbc:mysql://localhost:3306/kasir?zeroDateTimeBehavior=convertToNull";
+        String url = "jdbc:mysql://localhost:3306/rhasyyid?zeroDateTimeBehavior=convertToNull";
         try {
             koneksi = DriverManager.getConnection(url,"root","");
             System.out.println("Koneksi Database Berhasil");

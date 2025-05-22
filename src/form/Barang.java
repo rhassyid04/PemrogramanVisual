@@ -18,7 +18,7 @@ import koneksi.koneksi;
  *
  * @author User
  */
-public class Form_Barang extends javax.swing.JFrame {
+public class Barang extends javax.swing.JFrame {
     private Connection conn = new koneksi().connect();
     private DefaultTableModel tabmode;
     ResultSet cari=null;
@@ -26,7 +26,7 @@ public class Form_Barang extends javax.swing.JFrame {
     /**
      * Creates new form Form_Barang
      */
-    public Form_Barang() {
+    public Barang() {
         initComponents();
         datatable();
         aktif();
@@ -50,7 +50,7 @@ public class Form_Barang extends javax.swing.JFrame {
         Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Jual", "Harga Beli"};
         tabmode = new DefaultTableModel(null, Baris);
         tabelbarang.setModel(tabmode);
-        String sql = "SELECT * FROM barang";        
+        String sql = "SELECT * FROM barang1";        
         try{
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
@@ -90,7 +90,7 @@ public class Form_Barang extends javax.swing.JFrame {
             tabelbarang.setModel(tabmode);
             Statement stt=conn.createStatement();
             tabmode.getDataVector().removeAllElements();            
-            cari = stt.executeQuery("SELECT * from barang WHERE kd LIKE '%"+key+
+            cari = stt.executeQuery("SELECT * from barang1 WHERE kd LIKE '%"+key+
                     "%' OR nama LIKE '%"+key+"%' OR jenis LIKE '%"+key+"%'");
             while(cari.next()){
                 Object[] data={
@@ -108,7 +108,7 @@ public class Form_Barang extends javax.swing.JFrame {
     }
     
     private void simpan(){
-        String sql = "insert into barang values (?,?,?,?,?)";
+        String sql = "insert into barang1 values (?,?,?,?,?)";
         try{
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, kd.getText());
@@ -129,7 +129,7 @@ public class Form_Barang extends javax.swing.JFrame {
     
     private void ubah(){
         try{
-            String sql = "Update barang set nama=?, jenis=?, hjual=?, hbeli=? where kd_barang='"+kd.getText()+"'";
+            String sql = "Update barang1 set nama=?, jenis=?, hjual=?, hbeli=? where kd_barang='"+kd.getText()+"'";
             PreparedStatement stat= conn.prepareStatement(sql);
             stat.setString(1, nama.getText());
             stat.setString(2, jenis.getText());
@@ -149,7 +149,7 @@ public class Form_Barang extends javax.swing.JFrame {
     protected void hapus(){
         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
         if (ok==0){
-            String sql="delete from barang where id ='"+kd.getText()+"'";
+            String sql="delete from barang1 where kd_barang ='"+kd.getText()+"'";
             try{
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();
@@ -329,7 +329,7 @@ public class Form_Barang extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(255, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 255, 204));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setText("DATA BARANG");
@@ -504,20 +504,21 @@ public class Form_Barang extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Form_Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Form_Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Form_Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Form_Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Barang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Form_Barang().setVisible(true);
+                new Barang().setVisible(true);
             }
         });
     }
