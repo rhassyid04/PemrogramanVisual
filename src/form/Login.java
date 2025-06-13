@@ -153,7 +153,7 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             Statement st = conn.createStatement();
-            String sql = "SELECT * FROM admin WHERE username='" + user.getText() + "'";
+            String sql = "SELECT * FROM kasir WHERE nama_kasir='" + user.getText() + "'";
             ResultSet result = st.executeQuery(sql);
             
             if (result.next()) {

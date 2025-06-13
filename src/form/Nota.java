@@ -12,12 +12,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import koneksi.koneksi;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -37,8 +41,8 @@ public class Nota extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         txtnama.setText(Login.getUserLogin());
-        datapelanggan();
-        databarang();
+//        datapelanggan();
+//        databarang();
         autonumber();
         tanggal();
         mengambil();
@@ -158,51 +162,7 @@ public class Nota extends javax.swing.JFrame {
             total += amount;
         }txttotal.setText(Integer.toString(total));
     }
-    
-    protected void datapelanggan() {
-        Object[] Baris = {"ID Pelanggan", "Nama Pelanggan","Jenis Kelamin", "No Telepon", "Alamat"};
-        tabmode = new DefaultTableModel(null, Baris);
-        tabelpelanggan.setModel(tabmode);
-        String sql = "SELECT * FROM pelanggan1";        
-        try{
-            java.sql.Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while(hasil.next()){
-                String a = hasil.getString("id");
-                String b = hasil.getString("nama");
-                String c = hasil.getString("jenis_kel");
-                String d = hasil.getString("notelp");
-                String e = hasil.getString("alamat");
-                
-                String[] data = {a,b,c,d,e};
-                tabmode.addRow(data);
-            }
-        }catch (Exception e){        
-        }
-    }
-    
-    protected void databarang() {
-        Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Jual", "Harga Beli"};
-        tabmode = new DefaultTableModel(null, Baris);
-        tabelbarang.setModel(tabmode);
-        String sql = "SELECT * FROM barang1";        
-        try{
-            java.sql.Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while(hasil.next()){
-                String a = hasil.getString("kd_barang");
-                String b = hasil.getString("nama");
-                String c = hasil.getString("jenis");
-                String d = hasil.getString("hjual");
-                String e = hasil.getString("hbeli");
-                
-                String[] data = {a,b,c,d,e};
-                tabmode.addRow(data);
-            }
-        }catch (Exception e){        
-        }
-    }
-    
+        
     private void BtnEnabled(boolean x){
         bhapus.setEnabled(x);
         tgl.setEnabled(x);
@@ -220,6 +180,19 @@ public class Nota extends javax.swing.JFrame {
             model.removeRow(i);
         }
     }
+    
+    public void cetak() {
+        try {
+            String path = ".\\src\\laporan\\nota1.jasper";  // letak penyimpanan ireport
+            HashMap parameter = new HashMap();
+            parameter.put("id_nota", txtidnota.getText());
+            JasperPrint print = JasperFillManager.fillReport(path, parameter, conn);
+            JasperViewer.viewReport(print, false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(rootPane, "Dokumen Tidak Ada " + ex);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -285,6 +258,7 @@ public class Nota extends javax.swing.JFrame {
         txthb1 = new javax.swing.JTextField();
         txtidnota = new javax.swing.JTextField();
         tgl = new com.toedter.calendar.JDateChooser();
+        txtnama1 = new javax.swing.JLabel();
 
         jButton2.setText("Cari");
 
@@ -599,7 +573,7 @@ public class Nota extends javax.swing.JFrame {
         txtusername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtusername.setText("ID Kasir");
 
-        txtnama.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtnama.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         txtnama.setText("Nama Kasir");
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -682,6 +656,9 @@ public class Nota extends javax.swing.JFrame {
             }
         });
 
+        txtnama1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtnama1.setText("Nama Kasir");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -707,11 +684,12 @@ public class Nota extends javax.swing.JFrame {
                                 .addComponent(txtidnota, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addComponent(txtnama1))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtnama)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel14)
-                                .addGap(18, 18, 18)
-                                .addComponent(tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(tgl, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(96, 96, 96))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -737,7 +715,8 @@ public class Nota extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtusername)
-                    .addComponent(txtnama))
+                    .addComponent(txtnama)
+                    .addComponent(txtnama1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -848,10 +827,12 @@ public class Nota extends javax.swing.JFrame {
                  stat2.execute();
             }
             JOptionPane.showMessageDialog(null, "data berhasil disimpan");
+            cetak();
         }
         catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "data gagal disimpan"+e);
         }
+//        cetak();
         kosong();
         aktif();
         autonumber();
@@ -872,6 +853,26 @@ public class Nota extends javax.swing.JFrame {
 
     private void CpelangganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CpelangganActionPerformed
         // TODO add your handling code here:
+        Object[] Baris = {"ID Pelanggan", "Nama Pelanggan","Jenis Kelamin", "No Telepon", "Alamat"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tabelpelanggan.setModel(tabmode);
+        String sql = "SELECT * FROM pelanggan";        
+        try{
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("id");
+                String b = hasil.getString("nmplgn");
+                String c = hasil.getString("jenis");
+                String d = hasil.getString("telepon");
+                String e = hasil.getString("alamat");
+                
+                String[] data = {a,b,c,d,e};
+                tabmode.addRow(data);
+            }
+        }catch (Exception e){        
+        }
+        
         Dpelanggan.pack();
         Dpelanggan.setVisible(true);
         Dpelanggan.setLocationRelativeTo(null);
@@ -879,6 +880,26 @@ public class Nota extends javax.swing.JFrame {
 
     private void CbarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CbarangActionPerformed
         // TODO add your handling code here:
+        Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Jual", "Harga Beli"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tabelbarang.setModel(tabmode);
+        String sql = "SELECT * FROM barang";        
+        try{
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("kdbrg");
+                String b = hasil.getString("nmbrg");
+                String c = hasil.getString("jenis");
+                String d = hasil.getString("hargabeli");
+                String e = hasil.getString("hargajual");
+                
+                String[] data = {a,b,c,d,e};
+                tabmode.addRow(data);
+            }
+        }catch (Exception e){        
+        }
+        
         Dbarang.pack();
         Dbarang.setVisible(true);
         Dbarang.setLocationRelativeTo(null);
@@ -1013,6 +1034,7 @@ public class Nota extends javax.swing.JFrame {
     private javax.swing.JTextField txtid_selected;
     private javax.swing.JTextField txtidnota;
     private javax.swing.JLabel txtnama;
+    private javax.swing.JLabel txtnama1;
     private javax.swing.JTextField txtnm;
     private javax.swing.JTextField txtnmbrg;
     private javax.swing.JTextField txtqty;

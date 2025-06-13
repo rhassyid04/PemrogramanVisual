@@ -51,15 +51,15 @@ public class Pelanggan extends javax.swing.JFrame {
         Object[] Baris = {"ID Pelanggan", "Nama Pelanggan","Jenis Kelamin", "No Telepon", "Alamat"};
         tabmode = new DefaultTableModel(null, Baris);
         tabelpelanggan.setModel(tabmode);
-        String sql = "SELECT * FROM pelanggan1";        
+        String sql = "SELECT * FROM pelanggan";        
         try{
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while(hasil.next()){
                 String a = hasil.getString("id");
-                String b = hasil.getString("nama");
-                String c = hasil.getString("jenis_kel");
-                String d = hasil.getString("notelp");
+                String b = hasil.getString("nmplgn");
+                String c = hasil.getString("jenis");
+                String d = hasil.getString("telepon");
                 String e = hasil.getString("alamat");
                 
                 String[] data = {a,b,c,d,e};
@@ -95,7 +95,7 @@ public class Pelanggan extends javax.swing.JFrame {
         }else if(perempuan.isSelected()){
             jenis = "Perempuan";
         }
-        String sql = "insert into pelanggan1 values (?,?,?,?,?)";
+        String sql = "insert into pelanggan values (?,?,?,?,?)";
         try{
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, id.getText());
@@ -122,7 +122,7 @@ public class Pelanggan extends javax.swing.JFrame {
             jenis = "Perempuan";
         }
         try{
-            String sql = "Update pelanggan1 set nama=?, jenis_kel=?, notelp=?, alamat=? where id='"+id.getText()+"'";
+            String sql = "Update pelanggan set nmplgn=?, jenis=?, telepon=?, alamat=? where id='"+id.getText()+"'";
             PreparedStatement stat= conn.prepareStatement(sql);
             stat.setString(1, nama.getText());
             stat.setString(2, jenis);
@@ -142,7 +142,7 @@ public class Pelanggan extends javax.swing.JFrame {
     protected void hapus(){
         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
         if (ok==0){
-            String sql="delete from pelanggan1 where id ='"+id.getText()+"'";
+            String sql="delete from pelanggan where id ='"+id.getText()+"'";
             try{
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();
@@ -163,15 +163,15 @@ public class Pelanggan extends javax.swing.JFrame {
             tabelpelanggan.setModel(tabmode);
             Statement stt=conn.createStatement();
             tabmode.getDataVector().removeAllElements();            
-            cari = stt.executeQuery("SELECT * from pelanggan1 WHERE id LIKE '%"+key+
-                    "%' OR nama LIKE '%"+key+"%' OR jenis_kel LIKE '%"+key+
-                    "%' OR notelp LIKE '%"+key+"%'");
+            cari = stt.executeQuery("SELECT * from pelanggan WHERE id LIKE '%"+key+
+                    "%' OR nmplgn LIKE '%"+key+"%' OR jenis LIKE '%"+key+
+                    "%' OR telepon LIKE '%"+key+"%'");
             while(cari.next()){
                 Object[] data={
                     cari.getString("id"),
-                    cari.getString("nama"),
-                    cari.getString("jenis_kel"),
-                    cari.getString("notelp"),
+                    cari.getString("nmplgn"),
+                    cari.getString("jenis"),
+                    cari.getString("telepons"),
                     cari.getString("alamat")
                     };
                tabmode.addRow(data);

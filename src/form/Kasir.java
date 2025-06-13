@@ -59,10 +59,10 @@ public class Kasir extends javax.swing.JFrame {
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
-                String a = hasil.getString("id");
-                String b = hasil.getString("nama");
-                String c = hasil.getString("jenis_kel");
-                String d = hasil.getString("nohp");
+                String a = hasil.getString("id_kasir");
+                String b = hasil.getString("nama_kasir");
+                String c = hasil.getString("jenis_kelamin");
+                String d = hasil.getString("no_telepon");
                 String e = hasil.getString("agama");
                 String f = hasil.getString("alamat");
                 String g = hasil.getString("password");
@@ -110,15 +110,15 @@ public class Kasir extends javax.swing.JFrame {
             tabelkasir.setModel(tabmode);
             Statement stt = conn.createStatement();
             tabmode.getDataVector().removeAllElements();
-            cari = stt.executeQuery("SELECT * from kasir WHERE id LIKE '%" + key
-                    + "%' OR nama LIKE '%" + key + "%' OR jenis_kel LIKE '%" + key
-                    + "%' OR nohp LIKE '%" + key + "%'");
+            cari = stt.executeQuery("SELECT * from kasir WHERE id_kasir LIKE '%" + key
+                    + "%' OR nama_kasir LIKE '%" + key + "%' OR jenis_kelamin LIKE '%" + key
+                    + "%' OR no_telepon LIKE '%" + key + "%'");
             while (cari.next()) {
                 Object[] data = {
-                    cari.getString("id"),
-                    cari.getString("nama"),
-                    cari.getString("jenis_kel"),
-                    cari.getString("nohp"),
+                    cari.getString("id_kasir"),
+                    cari.getString("nama_kasir"),
+                    cari.getString("jenis_kelamin"),
+                    cari.getString("no_telepon"),
                     cari.getString("agama"),
                     cari.getString("alamat"),
                     cari.getString("password")
@@ -166,7 +166,7 @@ public class Kasir extends javax.swing.JFrame {
             jenis = "Perempuan";
         }
         try {
-            String sql = "Update kasir set nama=?, jenis_kel=?, nohp=?, agama=?, alamat=?, password=? where id='" + id.getText() + "'";
+            String sql = "Update kasir set nama_kasir=?, jenis_kelamin=?, no_telepon=?, agama=?, alamat=?, password=? where id_kasir='" + id.getText() + "'";
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, nama.getText());
             stat.setString(2, jenis);
@@ -188,7 +188,7 @@ public class Kasir extends javax.swing.JFrame {
     protected void hapus() {
         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
         if (ok == 0) {
-            String sql = "delete from kasir where id ='" + id.getText() + "'";
+            String sql = "delete from kasir where id_kasir ='" + id.getText() + "'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();

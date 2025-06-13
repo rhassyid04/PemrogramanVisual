@@ -47,19 +47,19 @@ public class Barang extends javax.swing.JFrame {
     }
     
     protected void datatable() {
-        Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Jual", "Harga Beli"};
+        Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Beli", "Harga Jul"};
         tabmode = new DefaultTableModel(null, Baris);
         tabelbarang.setModel(tabmode);
-        String sql = "SELECT * FROM barang1";        
+        String sql = "SELECT * FROM barang";        
         try{
             java.sql.Statement stat = conn.createStatement();
             ResultSet hasil = stat.executeQuery(sql);
             while(hasil.next()){
-                String a = hasil.getString("kd_barang");
-                String b = hasil.getString("nama");
+                String a = hasil.getString("kdbrg");
+                String b = hasil.getString("nmbrg");
                 String c = hasil.getString("jenis");
-                String d = hasil.getString("hjual");
-                String e = hasil.getString("hbeli");
+                String d = hasil.getString("hargabeli");
+                String e = hasil.getString("hargajual");
                 
                 String[] data = {a,b,c,d,e};
                 tabmode.addRow(data);
@@ -79,26 +79,26 @@ public class Barang extends javax.swing.JFrame {
         kd.setText(a);
         nama.setText(b);
         jenis.setText(c);
-        hjual.setText(d);
-        hbeli.setText(e);
+        hbeli.setText(d);
+        hjual.setText(e);
     }
     
     private void cariData(String key){
         try{
-            Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Jual", "Harga Beli"};
+            Object[] Baris = {"KD Barang", "Nama Barang","Jenis Barang", "Harga Beli", "Harga Jual"};
             tabmode = new DefaultTableModel(null, Baris);
             tabelbarang.setModel(tabmode);
             Statement stt=conn.createStatement();
             tabmode.getDataVector().removeAllElements();            
-            cari = stt.executeQuery("SELECT * from barang1 WHERE kd LIKE '%"+key+
-                    "%' OR nama LIKE '%"+key+"%' OR jenis LIKE '%"+key+"%'");
+            cari = stt.executeQuery("SELECT * from barang WHERE kdbrg LIKE '%"+key+
+                    "%' OR nmbrg LIKE '%"+key+"%' OR jenis LIKE '%"+key+"%'");
             while(cari.next()){
                 Object[] data={
-                    cari.getString("kd_barang"),
-                    cari.getString("nama"),
+                    cari.getString("kdbrg"),
+                    cari.getString("nmbrg"),
                     cari.getString("jenis"),
-                    cari.getString("hjual"),
-                    cari.getString("jbeli")
+                    cari.getString("hargabeli"),
+                    cari.getString("hargajual")
                     };
                tabmode.addRow(data);
             }                
@@ -108,14 +108,14 @@ public class Barang extends javax.swing.JFrame {
     }
     
     private void simpan(){
-        String sql = "insert into barang1 values (?,?,?,?,?)";
+        String sql = "insert into barang values (?,?,?,?,?)";
         try{
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, kd.getText());
             stat.setString(2, nama.getText());
             stat.setString(3, jenis.getText());
-            stat.setString(4, hjual.getText());
-            stat.setString(5, hbeli.getText());
+            stat.setString(4, hbeli.getText());
+            stat.setString(5, hjual.getText());
 
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
@@ -129,12 +129,12 @@ public class Barang extends javax.swing.JFrame {
     
     private void ubah(){
         try{
-            String sql = "Update barang1 set nama=?, jenis=?, hjual=?, hbeli=? where kd_barang='"+kd.getText()+"'";
+            String sql = "Update barang set nmbrg=?, jenis=?, hargabeli=?, hargajual=? where kdbrg='"+kd.getText()+"'";
             PreparedStatement stat= conn.prepareStatement(sql);
             stat.setString(1, nama.getText());
             stat.setString(2, jenis.getText());
-            stat.setString(3, hjual.getText());
-            stat.setString(4, hbeli.getText());
+            stat.setString(3, hbeli.getText());
+            stat.setString(4, hjual.getText());
 
             stat.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data Berhasil diubah");
@@ -149,7 +149,7 @@ public class Barang extends javax.swing.JFrame {
     protected void hapus(){
         int ok = JOptionPane.showConfirmDialog(null, "Hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
         if (ok==0){
-            String sql="delete from barang1 where kd_barang ='"+kd.getText()+"'";
+            String sql="delete from barang where kdbrg ='"+kd.getText()+"'";
             try{
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();
@@ -208,7 +208,7 @@ public class Barang extends javax.swing.JFrame {
         jLabel3.setText("Nama Barang");
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel5.setText("Harga Jual");
+        jLabel5.setText("Harga Beli");
 
         kd.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
 
